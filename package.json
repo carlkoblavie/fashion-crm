@@ -2,6 +2,16 @@
   "name": "fashion-crm",
   "version": "0.1.0",
   "private": true,
+  "standard": {
+    "ignore": [
+      "build/*"
+    ],
+    "env": [
+      "jest",
+      "es6",
+      "browser"
+    ]
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
@@ -17,7 +27,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "./node_modules/.bin/standard",
+    "lint-fix": "./node_modules/.bin/standard --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -36,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "standard": "^16.0.1"
   }
 }
