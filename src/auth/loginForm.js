@@ -1,45 +1,51 @@
 import React from 'react'
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment
-} from 'semantic-ui-react'
 
-const LoginForm = () => (
-  <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-    <Grid.Column style={{ maxWidth: 450 }}>
-      <Header as='h2' color='teal' textAlign='center'>
-        Log-in to your account
-      </Header>
-      <Form size='large'>
-        <Segment stacked>
-          <Form.Input
-            fluid
-            icon='user'
-            iconPosition='left'
-            placeholder='E-mail address'
-          />
-          <Form.Input
-            fluid
-            icon='lock'
-            iconPosition='left'
-            placeholder='Password'
-            type='password'
-          />
+class LoginForm extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      labelPosition: 'right',
+      form: {
+        name: '',
+        region: '',
+        type: ''
+      }
+    }
+  }
 
-          <Button color='teal' fluid size='large'>
-            Login
-          </Button>
-        </Segment>
-      </Form>
-      <Message>
-        New to us? <a href='#'>Sign Up</a>
-      </Message>
-    </Grid.Column>
-  </Grid>
-)
+  onPositionChange (value) {
+    this.setState({ labelPosition: value })
+  }
+
+  onChange (key, value) {
+    this.setState({
+      form: Object.assign(this.state.form, { [key]: value })
+    })
+  }
+
+  render () {
+    return (
+      <div>
+        <Radio.Group size='small' value={this.state.labelPosition} onChange={this.onPositionChange.bind(this)}>
+          <Radio.Button value='left'>Left</Radio.Button>
+          <Radio.Button value='right'>Right</Radio.Button>
+          <Radio.Button value='top'>Top</Radio.Button>
+        </Radio.Group>
+        <div style={{ margin: 20 }} />
+        <Form className='demo-form-stacked' model={this.state.form} labelPosition={this.state.labelPosition} labelWidth='100'>
+          <Form.Item label='Name'>
+            <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')} />
+          </Form.Item>
+          <Form.Item label='Activity zone'>
+            <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')} />
+          </Form.Item>
+          <Form.Item label='Activity form'>
+            <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')} />
+          </Form.Item>
+        </Form>
+      </div>
+    )
+  }
+}
 
 export default LoginForm
