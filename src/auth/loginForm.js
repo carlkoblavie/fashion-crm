@@ -1,51 +1,66 @@
-import React from 'react'
+import { Form, Input, Button, Checkbox } from 'antd'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
-class LoginForm extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      labelPosition: 'right',
-      form: {
-        name: '',
-        region: '',
-        type: ''
-      }
-    }
+const LoginForm = () => {
+  const onFinish = (values) => {
+    console.log('Received values of form: ', values)
   }
 
-  onPositionChange (value) {
-    this.setState({ labelPosition: value })
-  }
-
-  onChange (key, value) {
-    this.setState({
-      form: Object.assign(this.state.form, { [key]: value })
-    })
-  }
-
-  render () {
-    return (
-      <div>
-        <Radio.Group size='small' value={this.state.labelPosition} onChange={this.onPositionChange.bind(this)}>
-          <Radio.Button value='left'>Left</Radio.Button>
-          <Radio.Button value='right'>Right</Radio.Button>
-          <Radio.Button value='top'>Top</Radio.Button>
-        </Radio.Group>
-        <div style={{ margin: 20 }} />
-        <Form className='demo-form-stacked' model={this.state.form} labelPosition={this.state.labelPosition} labelWidth='100'>
-          <Form.Item label='Name'>
-            <Input value={this.state.form.name} onChange={this.onChange.bind(this, 'name')} />
+  return (
+    <div style={{ width: '25%', margin: '0 auto', marginTop: '20%' }}>
+      <h3 style={{textAlign: 'center'}}>Log In</h3>
+      <Form
+        name='login'
+        className='login-form'
+        initialValues={{
+          remember: true
+        }}
+        onFinish={onFinish}
+      >
+        <Form.Item
+          name='email'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your Email!'
+            }
+          ]}
+        >
+          <Input prefix={<UserOutlined className='site-form-item-icon' />} placeholder='Email address' />
+        </Form.Item>
+        <Form.Item
+          name='password'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your Password!'
+            }
+          ]}
+        >
+          <Input
+            prefix={<LockOutlined className='site-form-item-icon' />}
+            type='password'
+            placeholder='Password'
+          />
+        </Form.Item>
+        <Form.Item>
+          <Form.Item name='remember' valuePropName='checked' noStyle>
+            <Checkbox>Remember me</Checkbox>
           </Form.Item>
-          <Form.Item label='Activity zone'>
-            <Input value={this.state.form.region} onChange={this.onChange.bind(this, 'region')} />
-          </Form.Item>
-          <Form.Item label='Activity form'>
-            <Input value={this.state.form.type} onChange={this.onChange.bind(this, 'type')} />
-          </Form.Item>
-        </Form>
-      </div>
-    )
-  }
+
+        </Form.Item>
+
+        <Form.Item style={{ float: 'right' }}>
+          <Button type='primary' htmlType='submit' className='login-form-button'>
+            Log in
+          </Button>
+        </Form.Item>
+        <a className='login-form-forgot' href=''>
+          Forgot password
+        </a>
+      </Form>
+    </div>
+  )
 }
 
 export default LoginForm
