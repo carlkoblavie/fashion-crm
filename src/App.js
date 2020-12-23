@@ -2,6 +2,7 @@ import './App.css'
 import React, { useContext, createContext, useState } from 'react'
 import LoginForm from './auth/loginForm'
 import Dashboard from './dashboard/index'
+import Logout from './auth/logOut'
 import {
   BrowserRouter as Router,
   Switch,
@@ -27,6 +28,12 @@ function App () {
         <Switch>
           <Route path='/dashboard'>
             <Dashboard />
+          </Route>
+          <Route path='/logout'>
+            <Logout />
+          </Route>
+          <Route path='/login'>
+            <LoginForm setToken={setToken} />
           </Route>
         </Switch>
       </BrowserRouter>

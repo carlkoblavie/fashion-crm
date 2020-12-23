@@ -1,32 +1,35 @@
 import { Form, Input, Button, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { PropTypes } from 'prop-types';
+import { PropTypes } from 'prop-types'
 import {
-  BrowserRouter as Router,
-  useHistory,
-  useLocation
+  BrowserRouter as Router, Redirect
 } from 'react-router-dom'
-import React, { useContext, createContext, useState } from 'react'
+import React, { useState } from 'react'
 
 async function loginUser (credentials) {
-  // setTimeout(() => ({ token: '123456' }), 2000)
-  console.log('loginUser')
   const token = Promise.resolve({ token: '12345' })
   return token
 }
 
 export default function LoginForm ({ setToken }) {
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async ({ email, password }) => {
     console.log('handleSubmit')
-    const token = await loginUser({
-      email,
-      password
-    })
-    setToken(token)
+    if (email && password) {
+      console.log(email, password)
+      const token = await loginUser({
+        email,
+        password
+      })
+      if (token) {
+        setToken(token)
+      }
+    }
+  }
+
+  const onFinish = (values) => {
+    const { email, password } = values
+    console.log('success', values)
+    handleSubmit({ email, password })
   }
 
   return (
@@ -35,18 +38,21 @@ export default function LoginForm ({ setToken }) {
       <Form
         name='login'
         className='login-form'
-        onSubmit={handleSubmit}
         initialValues={{
           remember: true
         }}
+        onFinish={onFinish}
       >
         <Form.Item
           name='email'
-          onChange={e => setEmail(e.target.value)}
           rules={[
             {
               required: true,
-              message: 'Please input your Email!'
+              message: 'Please input your email!'
+            },
+            {
+              type: 'email',
+              message: 'Please input a valid email'
             }
           ]}
         >
@@ -54,7 +60,6 @@ export default function LoginForm ({ setToken }) {
         </Form.Item>
         <Form.Item
           name='password'
-          onChange={e => setPassword(e.target.value)}
           rules={[
             {
               required: true,
@@ -80,7 +85,6 @@ export default function LoginForm ({ setToken }) {
             type='primary'
             htmlType='submit'
             className='login-form-button'
-            onClick={handleSubmit}
           >
             Log in
           </Button>
@@ -91,6 +95,10 @@ export default function LoginForm ({ setToken }) {
       </Form>
     </div>
   )
+
+  function bug() {
+    debugger;
+  }
 }
 
 LoginForm.propTypes = {

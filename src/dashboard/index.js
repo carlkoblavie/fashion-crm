@@ -4,7 +4,8 @@ import Customers from './customer/index'
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from 'react-router-dom'
 
 const { SubMenu } = Menu
@@ -14,11 +15,13 @@ export default function Dashboard () {
   return (
     <Layout>
       <Header className="header">
-        <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-          <Menu.Item key="1">nav 1</Menu.Item>
-          <Menu.Item key="2">nav 2</Menu.Item>
-          <Menu.Item key="3">nav 3</Menu.Item>
+        <div className="logo"/>
+        <Menu theme="dark" mode="horizontal" style={{ float: 'right' }}>
+          <Menu.Item key="1"></Menu.Item>
+          <Menu.Item key="2">Admin</Menu.Item>
+          <Menu.Item key="3">
+          <Link to="/logout">Log Out</Link>
+          </Menu.Item>
         </Menu>
       </Header>
       <Layout>
