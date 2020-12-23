@@ -1,24 +1,48 @@
 import { Form, Input, Button, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import { PropTypes } from 'prop-types';
+import {
+  BrowserRouter as Router,
+  useHistory,
+  useLocation
+} from 'react-router-dom'
+import React, { useContext, createContext, useState } from 'react'
 
-const LoginForm = () => {
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values)
+async function loginUser (credentials) {
+  // setTimeout(() => ({ token: '123456' }), 2000)
+  console.log('loginUser')
+  const token = Promise.resolve({ token: '12345' })
+  return token
+}
+
+export default function LoginForm ({ setToken }) {
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    console.log('handleSubmit')
+    const token = await loginUser({
+      email,
+      password
+    })
+    setToken(token)
   }
 
   return (
     <div style={{ width: '25%', margin: '0 auto', marginTop: '20%' }}>
-      <h3 style={{textAlign: 'center'}}>Log In</h3>
+      <h3 style={{ textAlign: 'center' }}>Log In</h3>
       <Form
         name='login'
         className='login-form'
+        onSubmit={handleSubmit}
         initialValues={{
           remember: true
         }}
-        onFinish={onFinish}
       >
         <Form.Item
           name='email'
+          onChange={e => setEmail(e.target.value)}
           rules={[
             {
               required: true,
@@ -30,6 +54,7 @@ const LoginForm = () => {
         </Form.Item>
         <Form.Item
           name='password'
+          onChange={e => setPassword(e.target.value)}
           rules={[
             {
               required: true,
@@ -51,7 +76,12 @@ const LoginForm = () => {
         </Form.Item>
 
         <Form.Item style={{ float: 'right' }}>
-          <Button type='primary' htmlType='submit' className='login-form-button'>
+          <Button
+            type='primary'
+            htmlType='submit'
+            className='login-form-button'
+            onClick={handleSubmit}
+          >
             Log in
           </Button>
         </Form.Item>
@@ -63,4 +93,6 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+LoginForm.propTypes = {
+  setToken: PropTypes.func.isRequired
+}
