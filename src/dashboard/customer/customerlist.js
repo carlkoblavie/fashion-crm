@@ -1,7 +1,10 @@
 import React from 'react'
-import { Table, Input, Button, Space } from 'antd'
+import { Table, Tag, Input, Button, Space } from 'antd'
 import Highlighter from 'react-highlight-words'
 import { SearchOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import ShowCustomer from './showcustomer'
 
 const data = [
   {
@@ -9,22 +12,32 @@ const data = [
     name: 'John Brown',
     gender: 'male',
     location: 'Tema',
-    phone: '0233945678'
+    phone: '0233945678',
+    birthday: 'July, 20th',
+    status: 'in arrears',
+    pendingItems: 'pending items'
   },
   {
     key: '2',
     name: 'John Brown',
     gender: 'male',
     location: 'Tema',
-    phone: '0233945678'
+    phone: '0233945678',
+    birthday: 'July, 20th',
+    status: 'in arrears',
+    pendingItems: 'pending items'
   },
+
   {
     key: '3',
     name: 'Jim Green',
     name: 'John Brown',
     gender: 'male',
     location: 'Tema',
-    phone: '0233945678'
+    phone: '0233945678',
+    birthday: 'July, 20th',
+    status: 'paid',
+    pendingItems: 'pending items'
   },
   {
     key: '4',
@@ -32,7 +45,10 @@ const data = [
     name: 'John Brown',
     gender: 'male',
     location: 'Tema',
-    phone: '0233945678'
+    phone: '0233945678',
+    birthday: 'July, 20th',
+    status: 'paid',
+    pendingItems: 'none'
   },
 ];
 
@@ -115,29 +131,91 @@ class Customers extends React.Component {
         key: 'name',
         width: '30%',
         ...this.getColumnSearchProps('name'),
+        render: (name) => (<Link to='/dashboard/customers/show'>{name}</Link>)
+      },
+      {
+        title: 'Birthday',
+        dataIndex: 'birthday',
+        key: 'birthday',
+        width: '10%'
       },
       {
         title: 'Gender',
         dataIndex: 'gender',
         key: 'gender',
-        width: '20%',
-        ...this.getColumnSearchProps('gender'),
+        width: '10%'
       },
       {
         title: 'Phone',
         dataIndex: 'phone',
         key: 'phone',
-        width: '20%',
+        width: '15%',
         ...this.getColumnSearchProps('phone'),
       },
       {
         title: 'Location',
         dataIndex: 'location',
         key: 'address',
-        ...this.getColumnSearchProps('location'),
+      },
+      {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      filters: [
+        {
+            text: 'IN ARREARS',
+            value: 'in arrears'
+        },
+        {
+            text: 'PAID',
+            value: 'paid'
+        }
+    ],
+    onFilter: (value, record) => record.status.indexOf(value) === 0,
+    render: status => (
+        <span>
+            {[status].map(aStatus => {
+            let color = 'green';
+            if (aStatus === 'in arrears') {
+                color = 'volcano';
+            }
+            return (
+                <Tag color={color} key={aStatus}>
+                {aStatus.toUpperCase()}
+                </Tag>
+            );
+            })}
+        </span>
+        ),
+    },
+    {
+        title: 'Pending Items',
+        dataIndex: 'pendingItems',
+        key: 'pendingItems',
+    },
+    {
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+          <Space size="middle">
+            <a>Edit</a>
+            <a>Delete</a>
+          </Space>
+        ),
       },
     ];
-    return <Table columns={columns} dataSource={data} />
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path='/dashboard/customers'>
+            <Table columns={columns} dataSource={data} />
+          </Route>
+          <Route exact path='/dashboard/customers/show'>
+            <ShowCustomer />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    )
   }
 }
 

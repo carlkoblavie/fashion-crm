@@ -96,8 +96,8 @@ export default function LoginForm ({ setToken }) {
     </div>
   )
 
-  function bug() {
-    debugger;
+  function bug () {
+    debugger
   }
 }
 
